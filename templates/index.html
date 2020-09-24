@@ -1,29 +1,31 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Task Master</title>
+<title>User Registration</title>
 {% endblock %}
 
 {% block body %}
-<div class="content">
-    <h1 style="text-align: center">Task Master</h1>
+<div class="user">
+    <h1 style="text-align: center">User Registration</h1>
     {% if tasks|length < 1 %}
-    <h4 style="text-align: center">There are no tasks. Create one below!</h4>
+    <h4 style="text-align: center">There are no users. Create one below!</h4>
     {% else %}
     <table>
         <tr>
-            <th>Task</th>
-            <th>Added</th>
+            <th>User</th>
+            <th>Password</th>
+            <th>Date created</th>
             <th>Actions</th>
         </tr>
         {% for task in tasks %}
             <tr>
-                <td>{{ task.content }}</td>
+                <td>{{ task.user }}</td>
+                <td>{{task.pwd}}</td>
                 <td>{{ task.date_created.date() }}</td>
                 <td>
                     <a href="/delete/{{task.id}}">Delete</a>
-                    <br>
-                    <a href="/update/{{task.id}}">Update</a>
+                     <!--<br>--> 
+                    <!--<a href="/update/{{task.id}}">Update</a>-->  
                 </td>
             </tr>
         {% endfor %}
@@ -32,9 +34,11 @@
 
     <div class="form">
         <form action="/" method="POST">
-            <input type="text" name="content" id="content">
-            <input type="submit" value="Add Task">
+            <input type="text" name="user" id="user">
+            <input type="text" name="pwd" id="pwd">
+            <input type="submit" value="Add User">
         </form>
     </div>
+    
 </div>
 {% endblock %}

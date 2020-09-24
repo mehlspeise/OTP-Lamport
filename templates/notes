@@ -1,0 +1,16 @@
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def update(id):
+    task = Todo.query.get_or_404(id)
+
+    if request.method == 'POST':
+        task.user = request.form.get('user', False)
+        task.pwd = request.form.get('pwd', False)
+
+        try:
+            db.session.commit()
+            return redirect('/')
+        except:
+            return 'There was an issue updating your user'
+
+    else:
+        return render_template('update.html')

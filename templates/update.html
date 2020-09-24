@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Task Master</title>
+<title>User Registration</title>
 {% endblock %}
 
 {% block body %}
@@ -10,7 +10,8 @@
 
     <div class="form">
         <form action="/update/{{task.id}}" method="POST">
-            <input type="text" name="content" id="content" value="{{task.content}}">
+            <input type="text" name="user" id="user" value="{{task.user}}">
+            <input type="text" name="pwd" id="pwd" value="{{task.pwd}}">
             <input type="submit" value="Update">
         </form>
     </div>
