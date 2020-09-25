@@ -24,8 +24,10 @@ def index():
     if request.method == 'POST':
         task_user = request.form.get('user', False)
         task_pwd = request.form.get('pwd', False)
-        pwd_hash = generate_password_hash(task_pwd, 12)
-        new_task = Todo(user=task_user, pwd= pwd_hash)
+       # pwd_hash = hashlib.md5(task_pwd.encode('utf-8')).hexdigest() #md5 hashing
+       # pwd_hash= hashlib.sha256(task_pwd.encode('utf-8')).hexdigest() #sha256 hashing
+       # pwd_hash = generate_password_hash(task_pwd,rounds=None) #bcrypt hashing
+        new_task = Todo(user=task_user, pwd= task_pwd)
 
         try:
             db.session.add(new_task)
@@ -50,7 +52,21 @@ def delete(id):
     except:
         return 'There was a problem deleting that user'
 
-#update function
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    #task = Todo.query.get_or_404(id)
+
+    if request.method == 'POST':
+        task_user = request.form.get('user', False)
+        task_pwd = request.form.get('pwd', False)
+
+        try:
+            return redirect('/')
+        except:
+            return 'There was an issue login your user'
+
+    else:
+        return render_template('login.html')
 
 
 if __name__ == "__main__":
