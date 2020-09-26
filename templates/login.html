@@ -1,19 +1,75 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>User Registration</title>
+    <script src="{{ url_for('static', filename='js/md5.js') }}" type="text/javascript"></script>
+    <title>User Login</title>
 {% endblock %}
 
 {% block body %}
-<div class="content">
-    <h1 style="text-align: center">Login User</h1>
+    <div class="content">
+        <h1 style="text-align: center">Login User</h1>
 
-    <div class="form">
-        <form action="/login" method="POST">
-            <input type="text" name="user" id="user">
-            <input type="text" name="pwd" id="pwd">
-            <input type="submit" style="align-items: center;"  value="Login">
-        </form>
+        <input type="hidden" name="pwd" id="pwd">
+
+        <div class="form">
+            <form action="/login" method="POST" id="form2send" onsubmit="setHashedPassword(); return false;">
+                <input type="text" name="username" id="username">
+                <input type="text" id="pwdinput">
+                <input type="hidden" name="password" id="password" value="default">
+                <input type="submit" style="align-items: center;" value="Login">
+            </form>
+        </div>
     </div>
-</div>
+
+    <script>
+        async function getIndex(username) {
+            // make integer out of string, (+)
+            let response = await fetch("/current_index?username=" + username);
+            console.log("index response", response)
+            let index = await response.text();
+            if (index==="" || index===null) {
+                console.log("index was null", index)
+                return null;
+            }
+            console.log("index response text", index)
+            console.log("Received index for username: " + username + " : " + index)
+            return +index;
+        }
+
+        async function setHashedPassword() {
+            event.preventDefault()
+
+            // check username
+            let username = document.getElementById("username").value;
+            console.log("Hash password for user", username);
+            if (username === '') {
+                console.warn("Could not send form, because of missing username");
+                return false;
+            }
+
+            // check index
+            let currentIndex = await getIndex(username);
+
+            console.log("Hash password for index", currentIndex);
+            if ((currentIndex === null) || (currentIndex === undefined)) {
+                console.warn("Could not send form, because of missing index number for user", username);
+                return false;
+            }
+
+            // hash password
+            password = document.getElementById("pwdinput").value;
+            let hashedPassword = hashPassword(password, currentIndex);
+            console.log("hashedPassword: ", hashedPassword);
+            document.getElementById("password").value = hashedPassword;
+            console.log("document.getElementById(\"password\").value: ", document.getElementById("password").value);
+            {#document.getElementById("pwd").textContent = hashedPassword;#}
+            {#document.getElementById("pwd").innerText = hashedPassword;#}
+
+            // send form manually
+            // await cannot be used in form html, but async function is needed for getindex
+            // so we send form here manually, if all the checks are valid.
+            document.getElementById("form2send").submit();
+        }
+    </script>
 {% endblock %}
+
