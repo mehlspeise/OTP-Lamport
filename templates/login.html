@@ -62,8 +62,7 @@
             console.log("hashedPassword: ", hashedPassword);
             document.getElementById("password").value = hashedPassword;
             console.log("document.getElementById(\"password\").value: ", document.getElementById("password").value);
-            {#document.getElementById("pwd").textContent = hashedPassword;#}
-            {#document.getElementById("pwd").innerText = hashedPassword;#}
+           
 
             // send form manually
             // await cannot be used in form html, but async function is needed for getindex

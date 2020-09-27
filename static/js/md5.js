@@ -228,6 +228,8 @@ function pwd_hash() {
     document.getElementById("myForm").submit();
 }
 
+//hash password x-mal mit md5 hash
+
 function hashPassword(password, n_loops) {
     console.log("Start to hash password", password, "for loops", n_loops);
     if ((n_loops !== null) && (n_loops !== undefined)) {

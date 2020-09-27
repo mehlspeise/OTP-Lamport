@@ -72,12 +72,12 @@ def delete(id):
 @app.route('/current_index', methods=['GET'])
 def current_index():
     username = request.args.get('username')
-    account = Account.query.filter_by(username=username).first()
+    account = Account.query.filter_by(username=username).first() #first...takes first elemet it finds with specified username, ignores the rest
     if account is None:
         print("WRONG USERNAME")
         return ""
 
-    account.current_index -= 1
+    account.current_index -= 1 #indexwert um 1 reduzieren und persistieren
     db.session.add(account)
     db.session.commit()
     return str(account.current_index)
